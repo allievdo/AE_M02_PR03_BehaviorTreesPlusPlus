@@ -8,7 +8,7 @@ public class Door : MonoBehaviour
     public bool isLocked = false;
 
     Vector3 closedRotation = new Vector3 (0, 0, 0);
-    Vector3 openRotation = new Vector3(0, -135, 0);
+    Vector3 openRotation = new Vector3(0, 104, 0);
 
     public void ToggleDoorClose(bool closed)
     {
@@ -33,12 +33,14 @@ public class Door : MonoBehaviour
             isLocked = true;
         }
     }
+
     void Update()
     {
         if (isClosed)
         {
             transform.eulerAngles = closedRotation;
         }
+
         else
         {
             transform.eulerAngles = openRotation;

@@ -3,6 +3,8 @@ using System.Timers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+using JetBrains.Annotations;
 
 public abstract class Task
 {
@@ -57,7 +59,6 @@ public class IsFalse : Task
         EventBus.TriggerEvent(TaskFinished);
     }
 }
-
 public class OpenDoor : Task
 {
     Door mDoor;
@@ -85,7 +86,87 @@ public class BargeDoor : Task
 
     public override void run()
     {
-        mDoor.AddForce(-10f, 0, -2f, ForceMode.VelocityChange);
+        mDoor.AddForce(0f, 0, -10f, ForceMode.VelocityChange);
+        succeeded = true;
+        EventBus.TriggerEvent(TaskFinished);
+    }
+}
+
+public class ChangeMadColor : Task
+{
+    GameObject mPlayerColor;
+
+    public ChangeMadColor(GameObject somePlayerColor)
+    {
+        mPlayerColor = somePlayerColor;
+    }
+
+    public override void run()
+    {
+        Debug.Log("Changing color");
+        mPlayerColor.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+        succeeded = true;
+        EventBus.TriggerEvent(TaskFinished);
+    }
+}
+
+public class ChangeHappyColor : Task //Celebrate when get to treasure
+{
+    GameObject mPlayer;
+
+    public ChangeHappyColor(GameObject somePlayer)
+    {
+        mPlayer = somePlayer;
+    }
+
+    public override void run()
+    {
+        Debug.Log("Celebrating");
+        mPlayer.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
+        //Vector3 playerPos = mPlayer.transform.position;
+        //playerPos.y = 2;
+        succeeded = true;
+        EventBus.TriggerEvent(TaskFinished);
+    }
+}
+
+public class RainConfetti : Task
+{
+    GameObject mParticleEffect;
+
+    public RainConfetti(GameObject someParticleEffect)
+    {
+        mParticleEffect = someParticleEffect;
+    }
+
+    public override void run()
+    {
+        Debug.Log("RainConfetti");
+        mParticleEffect.SetActive(true);
+        succeeded = true;
+        EventBus.TriggerEvent(TaskFinished);
+    }
+}
+
+public class GiveUpAndGoHome : Task
+{
+    GameObject mPlayerLeave;
+    GameObject mText;
+    GameObject mAudio;
+
+    public GiveUpAndGoHome(GameObject somePlayerLeave, GameObject someText, GameObject someAudio)
+    {
+        mPlayerLeave = somePlayerLeave;
+        mText = someText;
+        mAudio = someAudio;
+    }
+
+    public override void run()
+    {
+        Debug.Log("Leaving");
+        mPlayerLeave.GetComponent<Rigidbody>().AddForce(0f, 0, 50f, ForceMode.VelocityChange);
+        mText.SetActive(true);
+        mAudio.SetActive(true);
         succeeded = true;
         EventBus.TriggerEvent(TaskFinished);
     }
