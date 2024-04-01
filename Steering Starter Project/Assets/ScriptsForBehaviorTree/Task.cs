@@ -167,7 +167,7 @@ public class GiveUpAndGoHome : Task
         mPlayerLeave.GetComponent<Rigidbody>().AddForce(0f, 0, 50f, ForceMode.VelocityChange);
         mText.SetActive(true);
         mAudio.SetActive(true);
-        succeeded = true;
+        succeeded = false;
         EventBus.TriggerEvent(TaskFinished);
     }
 }
@@ -279,7 +279,8 @@ public class Sequence : Task
         else
         {
             // sequence needs all children to succeed
-            // a child task failed, so we're done
+            // a child task failed, so we're done\
+            Debug.Log("TaskFailed");
             succeeded = false;
             EventBus.TriggerEvent(TaskFinished);
         }
